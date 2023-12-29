@@ -13,5 +13,5 @@ abstract class IBatchRepository {
   Future<Either<Failure, List<BatchEntity>>> getAllBatches();
   Future<Either<Failure, bool>> addBatch(BatchEntity batch);
   Future<Either<Failure, List<AuthEntity>>> getAllStudentsByBatch(
-      String batchId);
+      String batchId);;
 }
