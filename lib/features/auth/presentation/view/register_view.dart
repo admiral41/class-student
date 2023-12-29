@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
+import 'package:student_management_hive_api/core/common/provider/is_network_provider.dart';
+import 'package:student_management_hive_api/core/common/snackbar/my_snackbar.dart';
 import 'package:student_management_hive_api/features/batch/domain/entity/batch_entity.dart';
 import 'package:student_management_hive_api/features/batch/presentation/view_model/batch_view_model.dart';
 import 'package:student_management_hive_api/features/course/domain/entity/course_entity.dart';
@@ -40,7 +42,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   Widget build(BuildContext context) {
     final batchState = ref.watch(batchViewModelProvider);
     final courseState = ref.watch(courseViewModelProvider);
-
+    final isConnected = ref.watch(connectivityStatusProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isConnected == ConnectivityStatus.isDisconnected) {
+        showSnackBar(
+            message: "No internet Connection",
+            context: context,
+            color: Colors.red);
+      } else if (isConnected == ConnectivityStatus.isConnected) {
+        showSnackBar(message: "Your are online", context: context);
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
